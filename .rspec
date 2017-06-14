@@ -1,0 +1,5 @@
+--color
+--format documentation
+--format html
+--out /tmp/report.html
+--profile 5
