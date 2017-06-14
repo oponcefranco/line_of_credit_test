@@ -1,2 +1,2 @@
-# line_of_credit_test
+# Line of Credit Test
 Fair Take Home Exercise
