@@ -7,3 +7,5 @@ gem 'require_all', '~> 1.4'
 gem 'selenium-webdriver', '~> 3.4', '>= 3.4.1'
 gem 'rake', '~> 12.0'
 gem 'bundler', '~> 1.15', '>= 1.15.1'
+
+gem 'pry-byebug', '~> 3.4', '>= 3.4.2'
