@@ -10,7 +10,8 @@ chromeOptions = %w[ --test-type --disable-popup-blocking --disable-translate --s
 caps = Selenium::WebDriver::Remote::Capabilities.chrome('chromeOptions' => { 'args' => chromeOptions })
 opts = {
   :browser => :chrome,
-  :desired_capabilities => caps }
+  :desired_capabilities => caps
+}
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, opts)
