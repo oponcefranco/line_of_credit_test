@@ -1,13 +1,13 @@
 # Line of Credit Test
-Fair Take Home Exercise
+Take Home Exercise
 
 ### Install Ruby Manager & Ruby
 
-Using  [RVM](http://rvm.io/rvm/install) but [rbenv](https://github.com/sstephenson/rbenv) should work just fine.
+Either [rbenv](https://github.com/sstephenson/rbenv) or [RVM](http://rvm.io/rvm/install) should work just fine.
 
-    rvm install ruby-2.3.0
-    rvm use --create ruby-2.3.0@fair
-    rvm --ruby-version use ruby-2.3.0@fair
+    ❯ rbenv install 3.3.2
+    ❯ rbenv gemset create 3.3.2 line_of_credit_test
+    ❯ rbenv gemset active
 
 ## Application Setup
 ### Bundle Up

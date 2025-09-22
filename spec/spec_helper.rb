@@ -3,6 +3,7 @@ require "capybara/rspec"
 require "capybara"
 require "rspec"
 require "pry"
+require "dotenv/load"
 
 require_relative "./support/features/session_helpers.rb"
 
@@ -19,7 +20,7 @@ end
 
 Capybara.configure do |config|
   config.default_driver = :selenium
-  config.app_host = 'http://credit-test.herokuapp.com'
+  config.app_host = ENV['BASE_URL']
 end
 
 Capybara.default_max_wait_time = 10

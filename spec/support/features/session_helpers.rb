@@ -30,31 +30,38 @@ module Features
     end
     
     def remove_transaction
-      remove = page.all('a.delete-transaction')
-      click_link(remove[0])
+      remove_links = page.all('a.delete-transaction', wait: 10)
+      raise "No delete transaction links found" if remove_links.empty?
+      remove_links.first.click
     end
     
     def total_payoff_from_page
-      payoff = "0.00"
-      if page.has_css?('a.delete-transaction')
-        sleep(2)
-        result = page.all('body.line_of_credits p')
-        payoff = result[4].text
-        payoff.split(":")[1].split(/\D+/).reject(&:empty?).join(".").to_f
+      if page.has_css?('a.delete-transaction', wait: 10)
+        within('body.line_of_credits') do
+          # Wait for the page to update and find the payoff element
+          paragraphs = page.all('p', wait: 10)
+          raise "Expected at least 5 paragraphs, found #{paragraphs.length}" if paragraphs.length < 5
+
+          payoff_text = paragraphs[4].text
+          extract_currency_value(payoff_text)
+        end
       else
-        raise "unable to find element: #{element}"
+        raise "Unable to find delete transaction element - page may not be fully loaded"
       end
     end
     
     def total_interest_from_page
-      interest = "0.00"
-      if page.has_css?('a.delete-transaction')
-        sleep(2)
-        result = page.all('body.line_of_credits p')
-        interest = result[3].text
-        interest.split(":")[1].split(/\D+/).reject(&:empty?).join(".").to_f
+      if page.has_css?('a.delete-transaction', wait: 10)
+        within('body.line_of_credits') do
+          # Wait for the page to update and find the interest element
+          paragraphs = page.all('p', wait: 10)
+          raise "Expected at least 4 paragraphs, found #{paragraphs.length}" if paragraphs.length < 4
+
+          interest_text = paragraphs[3].text
+          extract_currency_value(interest_text)
+        end
       else
-        raise "unable to find element: #{element}"
+        raise "Unable to find delete transaction element - page may not be fully loaded"
       end
     end
     
@@ -80,12 +87,22 @@ module Features
       return total.round(2)
     end
     
-    def draw(amount, day)
-      (amount * 0.35) / 365 * day
+    def calculate_daily_interest(amount, days)
+      (amount * 0.35) / 365 * days
     end
-    
-    def pay(amount, day)
-      (amount * 0.35) / 365 * day
+
+    # Aliases for backward compatibility
+    alias draw calculate_daily_interest
+    alias pay calculate_daily_interest
+
+    private
+
+    def extract_currency_value(text)
+      # Extract numeric value from text like "Total: $123.45"
+      value_part = text.split(":")[1]
+      return 0.0 unless value_part
+
+      value_part.split(/\D+/).reject(&:empty?).join(".").to_f
     end
   end
 end
